@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
 
 import Providers from '@/context/Providers'
-import Header from '@/components/Header'
+import Header from '@/components/layouts/Header'
 
 import { Toaster } from '@/components/ui/toaster'
 import { ToastQuery } from '@/components/ToastQuery'
