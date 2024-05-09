@@ -26,17 +26,17 @@ const ContractHistoryTable: React.FC<ContractHistoryTableProps> = ({
           <TableHead>Collaborator</TableHead>
           <TableHead>Status</TableHead>
         </TableRow>
-        <TableBody>
-          {contractHistories.map((history: IContractHistory, id: number) => (
-            <TableRow key={id.toString()}>
-              <TableCell>{history.project_user.user_name}</TableCell>
-              <TableCell>
-                Signed at {new Date(history.created_at).toLocaleString()}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
       </TableHeader>
+      <TableBody>
+        {contractHistories.map((history: IContractHistory, id: number) => (
+          <TableRow key={id.toString()}>
+            <TableCell>{history.project_user.user_name}</TableCell>
+            <TableCell>
+              Signed at {new Date(history.created_at).toLocaleString()}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
     </Table>
   )
 }
