@@ -20,8 +20,7 @@ interface MediaProviderProps {
 
 export const MediaProvider = ({ children }: MediaProviderProps) => {
   const [currentMedia, setCurrentMedia] = useState<MediaProps>({
-    avatar:
-      'https://static.vecteezy.com/system/resources/previews/000/638/151/large_2x/realistic-headphones-with-sound-waves-vector.jpg',
+    avatar: '/audio.png',
     url: '',
     name: '',
     creator: '',

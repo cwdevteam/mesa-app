@@ -1,13 +1,16 @@
 import { Button } from '@/components/ui/button'
 import UserAuthDialog from '@/components/UserAuthDialog'
+import { useIntl } from 'react-intl'
 
 export default function Home() {
+  const intl = useIntl()
+
   return (
     <main className="grid gap-6 sm:gap-12 md:gap-24">
       <div className="grid grid-rows-[1fr_auto_2fr]">
         <section className="row-start-2 grid gap-4 place-items-center container w-fit p-8">
           <h1 className="text-4xl font-medium tracking-tight">
-            Welcome to Mesa
+            {intl.formatMessage({ id: 'page.welcome' })}
           </h1>
           <UserAuthDialog>
             <Button className="text-md px-8 w-full">Sign in</Button>

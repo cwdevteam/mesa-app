@@ -74,6 +74,16 @@ export default function ProjectMetaDataForm({
 
   const handleSubmit = async () => {
     try {
+      if (state.user_bps > 10000 || state.user_bps < 0) {
+        toast({
+          title: 'Warning',
+          description:
+            'The entered value is out of range. Please ensure the value is between 0 and 100',
+          variant: 'destructive',
+        })
+        return
+      }
+
       setLoaindg(true)
       const { data: result } = await axios.post('/api/project_user/update', {
         state: state,
@@ -183,6 +193,8 @@ export default function ProjectMetaDataForm({
           type="number"
           autoCorrect="off"
           required
+          min={0}
+          max={100}
           value={bps}
           onChange={(e) => {
             setBps(e.target.value)

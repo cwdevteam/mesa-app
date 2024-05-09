@@ -21,6 +21,7 @@ import {
 import { DateFormat, DateFormatProps } from '@/components/DateFormat'
 import { useState, useEffect } from 'react'
 import InviteAcceptButton from '../InviteProjectButton/InviteAcceptButton'
+import { useRouter } from 'next/router'
 
 function DateFormatWithLang({ date }: Omit<DateFormatProps, 'lang'>) {
   return <DateFormat date={date} />

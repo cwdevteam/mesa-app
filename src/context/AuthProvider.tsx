@@ -27,6 +27,7 @@ interface AuthResProps {
     iat: number
     id: string
     username: string
+    avatar: string
   }
   status: boolean
 }
@@ -36,6 +37,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     id: '',
     email: '',
     username: '',
+    avatar: '',
   })
 
   useEffect(() => {
@@ -52,16 +54,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           id: data.id,
           email: data.email,
           username: data.username,
+          avatar: data.avatar,
         })
       } else {
         setUser({
           id: '',
           email: '',
           username: '',
+          avatar: '',
         })
       }
     } catch (err) {
-      setUser({ id: '', email: '', username: '' })
+      setUser({ id: '', email: '', username: '', avatar: '' })
     }
   }
 

@@ -49,7 +49,6 @@ export default async function handler(
       userData: data.userData,
     })
   } catch (err) {
-    console.log(err)
     res.status(500).json({ status: false, message: 'Invalid credentials.' })
   }
 }

@@ -38,7 +38,7 @@ export default function Invite() {
           description: 'Please sign in',
           variant: 'destructive',
         })
-        router.push('/')
+        router.push(`/${router.locale}`)
         return
       }
       const { data } = await axios.post(
@@ -55,7 +55,7 @@ export default function Invite() {
           description: 'Accepted Invitation',
           variant: 'default',
         })
-        router.push(`/project/${data.id}`)
+        router.push(`/${router.locale}/project/${data.id}`)
       }
     } catch (err: any) {
       if (err.response?.data) {

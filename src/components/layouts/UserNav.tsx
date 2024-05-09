@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,15 +11,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 export function UserNav({ user, logout }: { user: any; logout: () => void }) {
+  const router = useRouter()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full">
           <Avatar className="h-7 w-7">
-            <AvatarImage
-              src={`https://avatar.vercel.sh/${user.id}.svg`}
-              alt="avatar"
-            />
+            <AvatarImage src={user.avatar} alt="avatar" />
             <AvatarFallback>
               {user.email ? user.email.slice(0, 2).toUpperCase() : 'ME'}
             </AvatarFallback>
@@ -34,6 +34,16 @@ export function UserNav({ user, logout }: { user: any; logout: () => void }) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <div className="flex">
+            <button
+              className="grow text-left"
+              onClick={() => router.push(`/${router.locale}/profile`)}
+            >
+              User Profile
+            </button>
+          </div>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <div className="flex">
             <button className="grow text-left" onClick={logout}>

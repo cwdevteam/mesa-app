@@ -38,7 +38,7 @@ export default function ProjectDetailsForm() {
         })
         setLoading(false)
 
-        router.push(`/project/${data.projectId}`)
+        router.push(`/${router.locale}/project/${data.projectId}`)
       }
     } catch (err: any) {
       setLoading(false)

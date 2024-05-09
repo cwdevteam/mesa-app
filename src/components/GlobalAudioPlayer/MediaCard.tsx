@@ -24,15 +24,19 @@ export function MediaCard({ media }: { media: MediaType }) {
 
   const handleSubmit = async () => {
     try {
+      const pathname: any = new URL(media.upload.url).pathname
+      const filename = pathname.match(/\/([^/]+)$/)[1]
+
       setLoading(true)
-      const { data } = await axios.post('/api/project_upload/remove', {
-        id: media.id,
+      const { data } = await axios.post('/api/upload/remove', {
+        id: media.upload.id,
+        name: filename,
       })
 
       if (data && data.status) {
         toast({
           title: 'Success',
-          description: 'Successfuly deleted',
+          description: 'Successfully deleted',
           variant: 'default',
         })
         router.reload()

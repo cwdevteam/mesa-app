@@ -24,7 +24,7 @@ export default function InviteAcceptButton({ inviteId }: { inviteId: string }) {
             description: 'Accepted Invitation',
             variant: 'default',
           })
-          router.push(`/project/${data.id}`)
+          router.push(`/${router.locale}/project/${data.id}`)
         } else {
           router.reload()
         }

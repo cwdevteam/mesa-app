@@ -46,7 +46,7 @@ export default async function handler(
 
     if (result?.length) {
       const { status, fileName, filePath, fileType }: S3UploadInterface =
-        await uploadToS3(result[1][1] as File)
+        await uploadToS3(result[1][1] as File, 'mesa-store')
 
       if (status) {
         // Send to Real Server

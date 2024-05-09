@@ -27,16 +27,17 @@ export default function Confrim() {
           id: data.userData.id,
           email: data.userData.email,
           username: data.userData.username,
+          avatar: data.userData.avatar,
         })
-        router.push('/dashboard')
-      } else router.push('/')
+        router.push(`/${router.locale}/dashboard`)
+      } else router.push(`/${router.locale}`)
     } catch (err: any) {
       toast({
         title: 'Error',
         description: !err.response.data?.status && err.response.data?.message,
         variant: 'destructive',
       })
-      router.push('/')
+      router.push(`/${router.locale}`)
     }
   }
 

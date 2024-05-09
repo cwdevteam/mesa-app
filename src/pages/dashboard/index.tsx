@@ -3,10 +3,12 @@ import CreateProjectDialog from '@/components/NewProjectButton/CreateProjectDial
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/context/AuthProvider'
 import { useEffect, useState } from 'react'
+import { useIntl } from 'react-intl'
 import axios from 'axios'
 
 export default function Dashboard() {
   const { user } = useAuth()
+  const intl = useIntl()
   const [projectsByInvite, setProjectsByInvite] = useState<
     ProjectsByInviteProps[]
   >([])
@@ -28,7 +30,6 @@ export default function Dashboard() {
       setProjectsByInvite(projectInvitation.data)
       setProjectsByUser(projectUser.data)
     } catch (err) {
-      console.log(err)
       setProjectsByInvite([])
       setProjectsByUser([])
     }
@@ -37,7 +38,9 @@ export default function Dashboard() {
   return (
     <main className="grid gap-10 container mx-auto py-10 content-start">
       <div className="flex justify-between gap-4">
-        <h2 className="text-2xl font-semibold tracking-tight">Your Projects</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          {intl.formatMessage({ id: 'page.welcome' })}
+        </h2>
 
         <CreateProjectDialog user={user}>
           <Button className="text-md px-4">{'New Project'}</Button>

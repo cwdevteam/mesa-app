@@ -129,18 +129,15 @@ export default function MediaController() {
                 className="h-full"
               />
               <div className="flex flex-col">
-                <Link
-                  href=""
-                  className="dark:text-white text-zinc-900 text-md font-sans hover:underline"
-                >
+                <div className="dark:text-white text-zinc-900 text-md font-sans hover:underline">
                   <b>{currentMedia.name}</b>
-                </Link>
-                <Link
+                </div>
+                {/* <Link
                   href=""
                   className="text-zinc-700 dark:text-zinc-400 text-sm font-sans hover:underline"
                 >
                   {currentMedia.creator}
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className="flex-1 flex flex-col gap-2">
@@ -187,7 +184,7 @@ export default function MediaController() {
               </div>
             </div>
             <div className="flex-1 flex items-center justify-end gap-3">
-              <button>
+              {/* <button>
                 <Icons.voicenowplay className={iconClass} />
               </button>
               <button>
@@ -198,7 +195,7 @@ export default function MediaController() {
               </button>
               <button>
                 <Icons.voiceconnect className={iconClass} />
-              </button>
+              </button> */}
               <div className="flex items-center justify-center gap-2">
                 {isMute ? (
                   <button onClick={handleMute}>
@@ -220,9 +217,9 @@ export default function MediaController() {
                   className="w-[120px] h-[3px]"
                 />
               </div>
-              <button>
+              {/* <button>
                 <Icons.voiceexpend className={iconClass} />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

@@ -93,7 +93,7 @@ export default function Setting() {
           description: 'Successfully deleted',
           variant: 'default',
         })
-        router.push('/dashboard')
+        router.push(`/${router.locale}/dashboard`)
       }
       setLoading(false)
     } catch (err) {
