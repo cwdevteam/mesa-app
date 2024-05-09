@@ -140,6 +140,7 @@ export default function Project() {
                   project={project}
                   contractId={contractId}
                   setContractId={setContractId}
+                  setContractTime={setContractTime}
                   setIsProjectView={(isProjectView) => {
                     setIsProjectView(isProjectView)
                     setTabContent('contract')
