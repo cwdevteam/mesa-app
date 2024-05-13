@@ -62,7 +62,7 @@ export function ProjectCollaborators({
             >
               Sign
             </button> */}
-            {user.id === project?.created_by && !contractId ? (
+            {!contractId ? (
               isLoadingContract ? (
                 <Button disabled>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
