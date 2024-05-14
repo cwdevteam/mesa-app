@@ -15,12 +15,14 @@ export function ProjectCollaborators({
   contractId,
   setContractId,
   setIsProjectView,
+  setContractTime
 }: {
   project: ProjectType | null
   user: User
   contractId: string | null
   setContractId: (contractId: string | null) => void
   setIsProjectView: (isProjectView: boolean) => void
+  setContractTime: (contractTime: Date) => void
 }) {
   const { locale } = useRouter()
   const router = useRouter()
@@ -33,9 +35,10 @@ export function ProjectCollaborators({
     try {
       setIsLoadingContract(true)
       const response = await axios.post('/api/contract/new', data)
-      const contractId = response.data.contractId
+      const {contractId, contractTime} = response.data
       setContractId(contractId)
       setIsProjectView(false)
+      setContractTime(contractTime)
       // router.push(`/contract/${contractId}`)
     } catch (e: any) {
       console.error(e.response.data)
@@ -59,7 +62,7 @@ export function ProjectCollaborators({
             >
               Sign
             </button> */}
-            {user.id === project?.created_by && !contractId ? (
+            {!contractId ? (
               isLoadingContract ? (
                 <Button disabled>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

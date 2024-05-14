@@ -27,7 +27,8 @@ export default async function handler(
     if (response && response.status) {
       res.status(200).json({
         status: true,
-        contractId: response.data.contractId
+        contractId: response.data.contractId,
+        contractTime: response.data.contractTime,
       })
     }
   } catch (err: any) {
