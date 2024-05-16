@@ -9,7 +9,6 @@ import { MediaList } from '@/components/GlobalAudioPlayer/MediaList'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ProjectSignNavbar from '@/components/Project/ProjectSignNavbar'
-import ProjectSignPdf from '@/components/Project/ProjectSignPdf'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import ContractHistoryTable from '@/components/ContractHistoryTable'
@@ -177,18 +176,9 @@ export default function Project() {
               </div>
             ) : (
               <div className="text-center mt-5">
-                Contract haven't started yet
+                Contract haven&apos;t started yet
               </div>
             )}
-
-            {/* <ProjectSignPdf
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              user={user}
-              project={project}
-              contractId={contractId}
-              setIsOpenContract={(b) => setIsOpenContract(b)}
-            /> */}
           </div>
         )}
       </main>

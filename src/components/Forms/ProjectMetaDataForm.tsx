@@ -49,7 +49,7 @@ export default function ProjectMetaDataForm({
 }) {
   const router = useRouter()
   const { toast } = useToast()
-  const [loading, setLoaindg] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [state, setState] = useState<any>({
     id: '',
     contract_type: 'master',
@@ -84,7 +84,7 @@ export default function ProjectMetaDataForm({
         return
       }
 
-      setLoaindg(true)
+      setLoading(true)
       const { data: result } = await axios.post('/api/project_user/update', {
         state: state,
         projectId: data.project_id,
@@ -95,9 +95,9 @@ export default function ProjectMetaDataForm({
         router.reload()
       }
 
-      setLoaindg(false)
+      setLoading(false)
     } catch (err) {
-      setLoaindg(false)
+      setLoading(false)
       toast({
         title: 'Error',
         description: 'Something went wrong!',

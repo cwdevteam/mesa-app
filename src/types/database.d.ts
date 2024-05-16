@@ -12,7 +12,7 @@ interface ProjectEventProps {
   type: string
   project_id: string
   user_id: string
-  playload: string
+  payload: string
   created_by: string
   create_at: Date
   update_at: Date

@@ -60,17 +60,17 @@ export function TimelineProvider({ children }: { children: ReactNode }) {
 
   const [state, dispatch] = useReducer(timelineReducer, initialState)
 
-  useEffect(() => {
-    if (router.query?.id) {
-      const intervalFunc = setInterval(() => {
-        init(String(router.query.id))
-      }, 5000)
+  // useEffect(() => {
+  //   if (router.query?.id) {
+  //     const intervalFunc = setInterval(() => {
+  //       init(String(router.query.id))
+  //     }, 5000)
 
-      init(String(router.query.id))
+  //     init(String(router.query.id))
 
-      return () => clearInterval(intervalFunc)
-    }
-  }, [router.query])
+  //     return () => clearInterval(intervalFunc)
+  //   }
+  // }, [router.query])
 
   const init = async (id: string) => {
     try {
