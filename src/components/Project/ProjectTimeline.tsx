@@ -75,7 +75,7 @@ export default function ProjectTimeline({
           type: 'add',
           event: {
             type: 'text',
-            content: { data: content },
+            content: content,
             created_at: new Date(),
             user: {
               email: user.email,
@@ -86,11 +86,15 @@ export default function ProjectTimeline({
         e.currentTarget.value = ''
 
         // send content to server
-        await axios.post('/api/note/add', {
-          type: 'text',
-          content: content.trim(),
-          projectId: projectId,
-        })
+        await axios
+          .post('/api/note/add', {
+            type: 'text',
+            content: content.trim(),
+            projectId: projectId,
+            userId: user.id,
+          })
+          .then((res) => console.log({ res }))
+          .catch((error) => console.log(error))
 
         scrollToBottom()
       }
@@ -121,7 +125,7 @@ export default function ProjectTimeline({
             key={`chat-${index}`}
           >
             <CardContent className="!p-4 min-w-20 !pb-1">
-              {renderEventContent(event)}
+              {String(event.content)}
             </CardContent>
             <CardFooter
               className={cn(
@@ -148,8 +152,8 @@ export default function ProjectTimeline({
       </div>
 
       {/* Timeline inputs */}
-      <div className="sticky bottom-0 flex items-center gap-4 p-6 rounded-lg bg-muted">
-        <FileButton projectId={projectId} />
+      <div className="sticky bottom-0 flex justify-center items-center gap-4 p-6 rounded-lg bg-muted">
+        {/* <FileButton projectId={projectId} /> */}
         <Textarea
           placeholder="Add a note..."
           className="flex-1 bg-background text-foreground rounded-2xl resize-none p-4"
