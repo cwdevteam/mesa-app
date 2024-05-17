@@ -15,7 +15,7 @@ export default async function handler(
     const { state, token }: InviteChoiceProps = req.body
     const session = getCookie(req)
     const { data } = await axios.put(
-      process.env.NEXT_PUBLIC_BASE_URL + '/project_invitation/bytoken',
+      process.env.NEXT_PUBLIC_BASE_URL + '/project_invitation/autosign',
       { state: state, token: token },
       {
         headers: {
@@ -27,12 +27,12 @@ export default async function handler(
 
     if (data && data.status) {
       res.status(200).json({
+        token: data.token,
         id: data.id,
         status: true,
       })
     }
   } catch (err: any) {
-    console.log({ err })
     if (err.response?.data) {
       res.status(500).send(err.response.data)
     } else {

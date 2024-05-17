@@ -8,7 +8,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { useAuth } from '@/context/AuthProvider'
 
 export default function Invite() {
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
   const { query }: any = useRouter()
@@ -33,13 +33,36 @@ export default function Invite() {
   const handleSubmit = async (state: string) => {
     try {
       if (!user.email) {
-        toast({
-          title: 'Warn',
-          description: 'Please sign in',
-          variant: 'destructive',
+        const invitation = await axios.post('/api/project_invitation/autosign', {
+          state: state,
+          token: query.token_hash,
         })
-        router.push(`/${router.locale}`)
-        return
+
+        if (invitation && invitation.data.status) {
+          toast({
+            title: 'Success',
+            description: 'Accepted Invitation',
+            variant: 'default',
+          })
+          const { data } = await axios.put('/api/auth/confirm', {
+            token: invitation.data.token,
+          })
+          if (data && data.status) {
+            setUser({
+              id: data.userData.id,
+              email: data.userData.email,
+              username: data.userData.username,
+              avatar: data.userData.avatar,
+            })
+            router.push(`/${router.locale}/project/${invitation.data.id}`)
+          }
+        } else {
+          toast({
+            title: 'Error',
+            description: 'Accepted Error',
+            variant: 'default',
+          })
+        }
       }
       const { data } = await axios.post(
         '/api/project_invitation/choicebytoken',
@@ -99,7 +122,7 @@ export default function Invite() {
           </Button>
           <Button
             className="bg-zinc-100 text-black border-2 border-zinc-200 hover:bg-zinc-200"
-            onClick={() => handleSubmit('accept')}
+            onClick={() => handleSubmit('decline')}
           >
             Decline
           </Button>
