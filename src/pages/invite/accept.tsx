@@ -33,10 +33,13 @@ export default function Invite() {
   const handleSubmit = async (state: string) => {
     try {
       if (!user.email) {
-        const invitation = await axios.post('/api/project_invitation/autosign', {
-          state: state,
-          token: query.token_hash,
-        })
+        const invitation = await axios.post(
+          '/api/project_invitation/autosign',
+          {
+            state: state,
+            token: query.token_hash,
+          }
+        )
 
         if (invitation && invitation.data.status) {
           toast({
@@ -63,22 +66,23 @@ export default function Invite() {
             variant: 'default',
           })
         }
-      }
-      const { data } = await axios.post(
-        '/api/project_invitation/choicebytoken',
-        {
-          state: state,
-          token: query.token_hash,
-        }
-      )
+      } else {
+        const { data } = await axios.post(
+          '/api/project_invitation/choicebytoken',
+          {
+            state: state,
+            token: query.token_hash,
+          }
+        )
 
-      if (data && data.status) {
-        toast({
-          title: 'Success',
-          description: 'Accepted Invitation',
-          variant: 'default',
-        })
-        router.push(`/${router.locale}/project/${data.id}`)
+        if (data && data.status) {
+          toast({
+            title: 'Success',
+            description: 'Accepted Invitation',
+            variant: 'default',
+          })
+          router.push(`/${router.locale}/project/${data.id}`)
+        }
       }
     } catch (err: any) {
       if (err.response?.data) {
