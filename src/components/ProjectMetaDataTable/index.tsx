@@ -135,7 +135,7 @@ export const ProjectMetaDataTable = ({
                 {headerGroup.headers.map((header: any, index: number) => (
                   <TableHead
                     key={header.id}
-                    className={index === 0 ? 'w-[160px]' : ''}
+                    className={index === 0 ? 'w-[160px]' : 'w-[80px]'}
                   >
                     {header.isPlaceholder
                       ? null

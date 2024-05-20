@@ -1,14 +1,13 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Icons } from '@/components/Icons'
 import { useMedia } from '@/context/MediaContext'
 import { useAuth } from '@/context/AuthProvider'
 
 export default function MediaController() {
   const intoClass =
-    'w-full sticky bottom-0 dark:bg-black bg-white text-white p-3 z-50 min-w-[900px] border-t-[1px] border-zinc-500'
+    'w-full sticky bottom-0 dark:bg-black bg-white text-white p-3 z-50 border-t-[1px] border-zinc-500'
   const iconClass =
     'w-4 h-4 text-zinc-400 dark:hover:text-white hover:text-black'
 
@@ -196,7 +195,7 @@ export default function MediaController() {
               <button>
                 <Icons.voiceconnect className={iconClass} />
               </button> */}
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2 mr-4 sm:mr-0">
                 {isMute ? (
                   <button onClick={handleMute}>
                     <Icons.voicemute className={iconClass} />
@@ -214,7 +213,7 @@ export default function MediaController() {
                   step="0.01"
                   value={volume}
                   onChange={handleVolumeChange}
-                  className="w-[120px] h-[3px]"
+                  className="hidden sm:block w-[120px] h-[3px]"
                 />
               </div>
               {/* <button>

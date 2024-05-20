@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
 
 import axios from 'axios'
+import { Icons } from '../Icons'
 
 export function ProjectCollaborators({
   project,
@@ -50,26 +51,34 @@ export function ProjectCollaborators({
         <div className="flex justify-between">
           <h3 className="text-lg font-bold tracking-tight">Collaborators</h3>
           <div className="flex items-center gap-2">
-            {/* <button
-              type="button"
-              onClick={openModal}
-              className="btn m-1 mx-3 py-1 px-2 font-bold border border-rgb-38-38-38 rounded-sm hover:bg-rgb-38-38-38"
-            >
-              Sign
-            </button> */}
             {!contractId ? (
               isLoadingContract ? (
                 <Button disabled>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
+                  <span className="hidden sm:block ml-1">Please wait</span>
                 </Button>
               ) : (
-                <Button onClick={onMakeContract}>Make Contract</Button>
+                <Button
+                  onClick={onMakeContract}
+                  className="text-sm rounded-full p-[6px] sm:rounded-md sm:px-4 sm:py-2"
+                >
+                  <Icons.contract
+                    style={{
+                      width: '20px',
+                      fill: '#FFF',
+                      marginLeft: 5,
+                    }}
+                  />{' '}
+                  <span className="hidden sm:block ml-1">Make Contract</span>
+                </Button>
               )
             ) : null}
             <ProjectInviteDialog user={user} project={project}>
-              <Button variant="outline" className="text-sm">
-                + Add Collaborator
+              <Button
+                variant="outline"
+                className="text-sm rounded-full px-[13px] py-2 sm:rounded-md sm:px-4 sm:py-2"
+              >
+                +<span className="hidden sm:block">&nbsp;Add Collaborator</span>
               </Button>
             </ProjectInviteDialog>
           </div>

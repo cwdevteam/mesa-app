@@ -6,7 +6,7 @@ export default function ProjectDetailsCard({ project }: { project: any }) {
   return (
     <section>
       <h2 className="text-2xl font-bold tracking-tight">{project?.title}</h2>
-      <div className="max-w-prose overflow-hidden">
+      {/* <div className="max-w-prose overflow-hidden">
         <p
           className={`text-muted-foreground ${expanded ? '' : 'line-clamp-3'}`}
         >
@@ -18,7 +18,7 @@ export default function ProjectDetailsCard({ project }: { project: any }) {
         >
           {expanded ? 'Read Less' : 'Read More'}
         </button>
-      </div>
+      </div> */}
     </section>
   )
 }

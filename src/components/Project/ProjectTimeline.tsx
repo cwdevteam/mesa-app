@@ -109,7 +109,7 @@ export default function ProjectTimeline({
 
   return (
     <div
-      className="relative grid grid-rows-[1fr_auto] gap-6 max-h-[600px] bg-muted rounded-lg w-full h-full overflow-auto max-w-2xl"
+      className="relative grid grid-rows-[1fr_auto] gap-6 max-h-[600px] bg-muted rounded-lg w-full h-full overflow-auto"
       ref={chatBoxRef}
     >
       {/* Timeline events */}
