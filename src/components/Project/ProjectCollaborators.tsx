@@ -1,9 +1,6 @@
-import Link from 'next/link'
 import { ProjectMetaDataTable } from '../ProjectMetaDataTable'
 import { Button } from '../ui/button'
 import ProjectInviteDialog from './ProjectInviteDialog'
-import { Icons } from '@/components/Icons'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
 
@@ -14,18 +11,16 @@ export function ProjectCollaborators({
   user,
   contractId,
   setContractId,
-  setIsProjectView,
-  setContractTime
+  setContractTime,
+  onMakeContract: handleMakeContract,
 }: {
   project: ProjectType | null
   user: User
   contractId: string | null
   setContractId: (contractId: string | null) => void
-  setIsProjectView: (isProjectView: boolean) => void
   setContractTime: (contractTime: Date) => void
+  onMakeContract: () => void
 }) {
-  const { locale } = useRouter()
-  const router = useRouter()
   const [isLoadingContract, setIsLoadingContract] = useState<boolean>(false)
 
   const onMakeContract = async () => {
@@ -35,9 +30,9 @@ export function ProjectCollaborators({
     try {
       setIsLoadingContract(true)
       const response = await axios.post('/api/contract/new', data)
-      const {contractId, contractTime} = response.data
+      const { contractId, contractTime } = response.data
       setContractId(contractId)
-      setIsProjectView(false)
+      handleMakeContract()
       setContractTime(contractTime)
       // router.push(`/contract/${contractId}`)
     } catch (e: any) {
@@ -77,13 +72,6 @@ export function ProjectCollaborators({
                 + Add Collaborator
               </Button>
             </ProjectInviteDialog>
-            {user.id === project?.created_by ? (
-              <Link href={`/${locale}/project/setting/${project?.id}`}>
-                <Button variant="outline" className="text-sm">
-                  <Icons.setting />
-                </Button>
-              </Link>
-            ) : null}
           </div>
         </div>
         <div className="flex flex-wrap overflow-auto text-muted-foreground text-xs">
