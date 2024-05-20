@@ -75,7 +75,7 @@ export default function ProjectTimeline({
           type: 'add',
           event: {
             type: 'text',
-            content: { data: content },
+            content: content,
             created_at: new Date(),
             user: {
               email: user.email,
@@ -86,11 +86,15 @@ export default function ProjectTimeline({
         e.currentTarget.value = ''
 
         // send content to server
-        await axios.post('/api/note/add', {
-          type: 'text',
-          content: content.trim(),
-          projectId: projectId,
-        })
+        await axios
+          .post('/api/note/add', {
+            type: 'text',
+            content: content.trim(),
+            projectId: projectId,
+            userId: user.id,
+          })
+          .then((res) => console.log({ res }))
+          .catch((error) => console.log(error))
 
         scrollToBottom()
       }
@@ -113,43 +117,54 @@ export default function ProjectTimeline({
         {events.map((event, index: number) => (
           <Card
             className={cn(
-              'rounded-2xl max-w-fit',
-              event.user?.email === user.email
-                ? '!rounded-br place-self-end'
-                : '!rounded-bl place-self-start bg-gray-300 dark:bg-zinc-900'
+              event.user === null
+                ? 'flex justify-center items-center bg-white mx-7'
+                : event.user?.email === user.email
+                  ? 'rounded-2xl max-w-fit !rounded-br place-self-end'
+                  : 'rounded-2xl max-w-fit !rounded-bl place-self-start bg-gray-300 dark:bg-zinc-900'
             )}
             key={`chat-${index}`}
           >
-            <CardContent className="!p-4 min-w-20 !pb-1">
-              {renderEventContent(event)}
-            </CardContent>
-            <CardFooter
+            <CardContent
               className={cn(
-                'flex items-center p-2',
-                event.user?.email === user.email
-                  ? 'justify-end'
-                  : 'justify-start'
+                event.user !== null
+                  ? '!p-4 min-w-20 !pb-1'
+                  : 'text-black text-base p-1 px-3'
               )}
             >
-              <CardTitle className="text-xs">
-                {event.user?.email !== user.email ? (
-                  <div className="flex items-center">
-                    {format(event?.created_at, 'HH:mm') +
-                      '<--' +
-                      event.user.username}
-                  </div>
-                ) : (
-                  format(event?.created_at, 'HH:mm')
+              {String(event.content)}
+            </CardContent>
+            {String(event.type) !== null && event.user_id !== null ? (
+              <CardFooter
+                className={cn(
+                  'flex items-center p-2',
+                  event.user?.email === user.email
+                    ? 'justify-end'
+                    : 'justify-start'
                 )}
-              </CardTitle>
-            </CardFooter>
+              >
+                <CardTitle className="text-xs">
+                  {event.user?.email !== user.email ? (
+                    <div className="flex items-center">
+                      {format(event?.created_at, 'HH:mm') +
+                        '<--' +
+                        event.user.username}
+                    </div>
+                  ) : (
+                    format(event?.created_at, 'HH:mm')
+                  )}
+                </CardTitle>
+              </CardFooter>
+            ) : (
+              <></>
+            )}
           </Card>
         ))}
       </div>
 
       {/* Timeline inputs */}
-      <div className="sticky bottom-0 flex items-center gap-4 p-6 rounded-lg bg-muted">
-        <FileButton projectId={projectId} />
+      <div className="sticky bottom-0 flex justify-center items-center gap-4 p-6 rounded-lg bg-muted">
+        {/* <FileButton projectId={projectId} /> */}
         <Textarea
           placeholder="Add a note..."
           className="flex-1 bg-background text-foreground rounded-2xl resize-none p-4"

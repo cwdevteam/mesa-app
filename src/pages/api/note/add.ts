@@ -6,6 +6,7 @@ type NewProps = {
   type: string
   content: string
   projectId: string
+  userId: string
 }
 
 export default async function handler(
@@ -13,12 +14,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { content, type, projectId }: NewProps = req.body
+    const { content, type, projectId, userId }: NewProps = req.body
     const session = getCookie(req)
 
     const { data } = await axios.post(
       process.env.NEXT_PUBLIC_BASE_URL + '/note/' + projectId,
-      { type: type, content: content },
+      { type: type, content: content, projectId: projectId, userId: userId },
       {
         headers: {
           'Content-Type': 'application/json',

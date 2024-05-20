@@ -6,12 +6,12 @@ import ProjectTimeline from '@/components/Project/ProjectTimeline'
 import { TimelineProvider } from '@/context/TimelineContext'
 import UploadButton from '@/components/FileUpload'
 import { MediaList } from '@/components/GlobalAudioPlayer/MediaList'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
-import ProjectSignNavbar from '@/components/Project/ProjectSignNavbar'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import ContractHistoryTable from '@/components/ContractHistoryTable'
+import { ProjectSetting } from '@/components/Project/ProjectSetting'
 
 export default function Project() {
   const { query }: any = useRouter()
@@ -20,7 +20,9 @@ export default function Project() {
   const [project, setProject] = useState<ProjectType | null>(null)
   const [medias, setMedias] = useState<MediaType[]>([])
   const [contractId, setContractId] = useState<string | null>(null)
-  const [tabContent, setTabContent] = useState<string>('project')
+  const [tabContent, setTabContent] = useState<
+    'project' | 'contract' | 'setting'
+  >('project')
   const [contractTime, setContractTime] = useState<Date | null>(null)
   const [contractHistories, setContractHistories] = useState<
     IContractHistory[]
@@ -65,15 +67,30 @@ export default function Project() {
     }
   }
 
-  const [isProjectView, setIsProjectView] = useState<boolean>(true)
-
-  const onchange = async (b: boolean) => {
+  const onTabChange = async (tab: 'project' | 'contract' | 'setting') => {
     await getProject()
-    setIsProjectView(b)
-    setTabContent(b ? 'project' : 'contract')
+    setTabContent(tab)
   }
 
-  const downloadContractDoc = async () => {
+  const downloadPDF = useCallback((data: any) => {
+    // Create a Blob from the PDF Stream
+    const byteArray = new Uint8Array(
+      data.split('').map((char: string) => char.charCodeAt(0))
+    )
+    const blob = new Blob([byteArray], { type: 'application/pdf' })
+
+    // Create a link using the blob
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'sign.pdf' // Specify the download file name
+    link.click()
+
+    // Clean up by revoking the Object URL
+    window.URL.revokeObjectURL(url)
+  }, [])
+
+  const downloadContractDoc = useCallback(async () => {
     const data = {
       contractId,
     }
@@ -83,50 +100,36 @@ export default function Project() {
     } catch (e: any) {
       console.error(e.response)
     }
-  }
-
-  function downloadPDF(data: any) {
-    // Create a Blob from the PDF Stream
-    const byteArray = new Uint8Array(
-      data.split('').map((char: string) => char.charCodeAt(0))
-    )
-    const blob = new Blob([byteArray], { type: 'application/pdf' })
-
-    // // Create a link using the blob
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'sign.pdf' // Specify the download file name
-    link.click()
-
-    // // Clean up by revoking the Object URL
-    window.URL.revokeObjectURL(url)
-  }
+  }, [contractId, downloadPDF])
 
   return (
     <TimelineProvider>
-      {/* <ProjectSignNavbar project={project}> */}
-
       <main className="grid grid-rows-[auto_minmax(0,1fr)] gap-6 container py-10 h-full">
         <div className="flex mb-10 flex-row h-5">
           <Tabs defaultValue="project" value={tabContent}>
             <TabsList>
-              <TabsTrigger value="project" onClick={() => onchange(true)}>
+              <TabsTrigger
+                value="project"
+                onClick={() => onTabChange('project')}
+              >
                 Project
               </TabsTrigger>
-              <TabsTrigger value="contract" onClick={() => onchange(false)}>
+              <TabsTrigger
+                value="contract"
+                onClick={() => onTabChange('contract')}
+              >
                 Contract
+              </TabsTrigger>
+              <TabsTrigger
+                value="setting"
+                onClick={() => onTabChange('setting')}
+              >
+                Setting
               </TabsTrigger>
             </TabsList>
           </Tabs>
-          {/* <div onClick={() => onchange(false)} className="m-5 cursor-pointer">
-            Project
-          </div>
-          <div className="m-5 cursor-pointer" onClick={() => onchange(true)}>
-            Contract
-          </div> */}
         </div>
-        {isProjectView ? (
+        {tabContent === 'project' ? (
           <div>
             <ProjectDetailsCard project={project} />
             <div className="flex flex-row gap-8">
@@ -140,10 +143,7 @@ export default function Project() {
                   contractId={contractId}
                   setContractId={setContractId}
                   setContractTime={setContractTime}
-                  setIsProjectView={(isProjectView) => {
-                    setIsProjectView(isProjectView)
-                    setTabContent('contract')
-                  }}
+                  onMakeContract={() => setTabContent('contract')}
                 />
                 <UploadButton projectId={query.id} />
 
@@ -153,7 +153,7 @@ export default function Project() {
               </div>
             </div>
           </div>
-        ) : (
+        ) : tabContent === 'contract' ? (
           <div>
             <div className="text-center text-2xl font-bold">
               {project?.title}
@@ -176,10 +176,12 @@ export default function Project() {
               </div>
             ) : (
               <div className="text-center mt-5">
-                Contract haven&apos;t started yet
+                Contract have not started yet
               </div>
             )}
           </div>
+        ) : (
+          <ProjectSetting />
         )}
       </main>
     </TimelineProvider>
