@@ -104,7 +104,7 @@ export default function Project() {
 
   return (
     <TimelineProvider>
-      <main className="container flex flex-col gap-6 py-10 items-center lg:items-start">
+      <main className="container flex flex-col gap-6 py-10 items-center lg:items-start w-full">
         <div className="mb-10 h-5">
           <Tabs defaultValue="project" value={tabContent}>
             <TabsList>
@@ -130,10 +130,10 @@ export default function Project() {
           </Tabs>
         </div>
         {tabContent === 'project' ? (
-          <div className="flex flex-col items-center lg:items-start gap-2">
+          <div className="flex flex-col items-center lg:items-start gap-2 w-full">
             <ProjectDetailsCard project={project} />
-            <div className="flex flex-col lg:flex-row-reverse gap-8">
-              <div>
+            <div className="flex flex-col lg:flex-row-reverse gap-8 w-full">
+              <div className="flex-1">
                 <ProjectCollaborators
                   user={user}
                   project={project}
@@ -148,7 +148,7 @@ export default function Project() {
                   <MediaList medias={medias} />
                 </div>
               </div>
-              <div className="flex-1 w-full lg:min-w-[400px]">
+              <div className="w-full lg:max-w-[400px]">
                 <ProjectTimeline projectId={project?.id} />
               </div>
             </div>
