@@ -13,7 +13,9 @@ export default function ProjectMetaDataDialog({
   user,
   data,
   open,
+  request,
   setOpen,
+  roleId,
   className,
   ...props
 }: any) {
@@ -24,13 +26,15 @@ export default function ProjectMetaDataDialog({
         {...props}
       >
         <DialogHeader>
-          <DialogTitle>Update Project Meta Data</DialogTitle>
+          <DialogTitle>{request === "create"? "Create" : "Update"} Project Meta Data</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="max-w-full">
           <ProjectMetaDataForm
+            request={request}
             user={user}
             data={data}
+            roleId={roleId}
             onSubmit={() => setOpen(false)}
           />
         </div>

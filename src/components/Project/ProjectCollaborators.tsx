@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react'
 
 import axios from 'axios'
 import { Icons } from '../Icons'
+import PopUp from './PopUp'
 
 export function ProjectCollaborators({
   project,
@@ -22,28 +23,6 @@ export function ProjectCollaborators({
   setContractTime: (contractTime: Date) => void
   onMakeContract: () => void
 }) {
-  const [isLoadingContract, setIsLoadingContract] = useState<boolean>(false)
-
-  const onMakeContract = async () => {
-    const data = {
-      projectId: project?.id,
-    }
-    try {
-      setIsLoadingContract(true)
-      const response = await axios.post('/api/contract/new', data)
-      const { contractId, contractTime } = response.data
-      setContractId(contractId)
-      handleMakeContract()
-      setContractTime(contractTime)
-      // router.push(`/contract/${contractId}`)
-    } catch (e: any) {
-      console.error(e.response.data)
-    } finally {
-      setIsLoadingContract(false)
-    }
-  }
-
-  const [pdfPath, setPdfPath] = useState('')
 
   return (
     <div>
@@ -52,16 +31,13 @@ export function ProjectCollaborators({
           <h3 className="text-lg font-bold tracking-tight">Collaborators</h3>
           <div className="flex items-center gap-2">
             {!contractId ? (
-              isLoadingContract ? (
-                <Button disabled>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  <span className="hidden sm:block ml-1">Please wait</span>
-                </Button>
-              ) : (
-                <Button
-                  onClick={onMakeContract}
-                  className="text-sm rounded-full p-[6px] sm:rounded-md sm:px-4 sm:py-2"
-                >
+              <PopUp
+                project={project}
+                setContractId={setContractId}
+                setContractTime={setContractTime}
+                onMakeContract={handleMakeContract}
+              >
+                <Button className="text-sm rounded-full p-[6px] sm:rounded-md sm:px-4 sm:py-2">
                   <Icons.contract
                     style={{
                       width: '20px',
@@ -71,7 +47,7 @@ export function ProjectCollaborators({
                   />{' '}
                   <span className="hidden sm:block ml-1">Make Contract</span>
                 </Button>
-              )
+              </PopUp>
             ) : null}
             <ProjectInviteDialog user={user} project={project}>
               <Button

@@ -32,7 +32,6 @@ export default async function handler(
       })
     }
   } catch (err: any) {
-    console.log({err});
     if (err.response?.data) {
       res.status(500).send(err.response.data)
     } else {

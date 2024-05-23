@@ -72,18 +72,19 @@ export default function Project() {
     setTabContent(tab)
   }
 
-  const downloadPDF = useCallback((data: any) => {
+  const downloadPDF = useCallback((data: any, project: any) => {
     // Create a Blob from the PDF Stream
     const byteArray = new Uint8Array(
       data.split('').map((char: string) => char.charCodeAt(0))
     )
+    
     const blob = new Blob([byteArray], { type: 'application/pdf' })
 
     // Create a link using the blob
     const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = 'sign.pdf' // Specify the download file name
+    link.download = `${project.title}(${project.created_at}).pdf`
     link.click()
 
     // Clean up by revoking the Object URL
@@ -96,7 +97,7 @@ export default function Project() {
     }
     try {
       const response = await axios.post('/api/contract/get', data)
-      downloadPDF(response.data.document)
+      downloadPDF(response.data.document, response.data.project)
     } catch (e: any) {
       console.error(e.response)
     }
@@ -154,8 +155,8 @@ export default function Project() {
             </div>
           </div>
         ) : tabContent === 'contract' ? (
-          <div>
-            <div className="text-center text-2xl font-bold">
+          <div className='w-full'>
+            <div className="text-center text-2xl font-bold w-full">
               {project?.title}
             </div>
             <div className="text-center">{project?.description}</div>
@@ -168,7 +169,7 @@ export default function Project() {
                   </span>
                 </span>
                 <Button onClick={downloadContractDoc}>
-                  Download Sign Document
+                  Download Signed Document
                 </Button>
                 <div className="w-full flex justify-center max-w-3xl pt-6">
                   <ContractHistoryTable contractHistories={contractHistories} />

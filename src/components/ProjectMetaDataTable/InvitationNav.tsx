@@ -9,7 +9,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { toast } from '../ui/use-toast'
 
-export const InvitaionNav = ({
+export const InvitationNav = ({
   userId,
   invitationId,
 }: {

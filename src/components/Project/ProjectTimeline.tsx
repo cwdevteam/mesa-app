@@ -118,7 +118,7 @@ export default function ProjectTimeline({
           <Card
             className={cn(
               event.user === null
-                ? 'flex justify-center items-center bg-white mx-7'
+                ? 'flex justify-center items-center mx-12'
                 : event.user?.email === user.email
                   ? 'rounded-2xl max-w-fit !rounded-br place-self-end'
                   : 'rounded-2xl max-w-fit !rounded-bl place-self-start bg-gray-300 dark:bg-zinc-900'
@@ -129,7 +129,7 @@ export default function ProjectTimeline({
               className={cn(
                 event.user !== null
                   ? '!p-4 min-w-20 !pb-1'
-                  : 'text-black text-base p-1 px-3'
+                  : 'text-base p-1 px-3 text-center'
               )}
             >
               {String(event.content)}

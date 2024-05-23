@@ -2,19 +2,16 @@ import { getCookie } from '@/lib/utils'
 import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-type NewProps = {
-  contractId: string | null
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const { contractId }: NewProps = req.body
+    const { id } = req.body
     const session = getCookie(req)
-    const response = await axios.get(
-      process.env.NEXT_PUBLIC_BASE_URL + '/contract/' + contractId,
+
+    const result = await axios.delete(
+      process.env.NEXT_PUBLIC_BASE_URL + '/project_user_role/delete/' + id,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -23,11 +20,9 @@ export default async function handler(
       }
     )
 
-    if (response && response.status) {
+    if (result.data && result.data.status) {
       res.status(200).json({
         status: true,
-        document: response.data.document,
-        project: response.data.project
       })
     }
   } catch (err: any) {

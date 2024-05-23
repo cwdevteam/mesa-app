@@ -18,42 +18,70 @@ import {
 } from '@/components/ui/select'
 import axios from 'axios'
 
+enum ContractType {
+  Master = 'Master',
+  Songwriting = 'Songwriting',
+  Both = 'Both',
+}
+
+enum UserRole {
+  Owner = 'Owner',
+  Producer = 'Producer',
+  Songwriter = 'Songwriter',
+  Artist = 'Artist',
+  Manager = 'Manager',
+  Publisher = 'Publisher',
+  Lawyer = 'Lawyer',
+}
+
 interface SelectOption {
   value: string
   label: string
 }
 
 const contractTypeOptions: SelectOption[] = [
-  { value: 'master', label: 'Master' },
-  { value: 'songwriting', label: 'Songwriting' },
+  { value: ContractType.Master, label: 'Master' },
+  { value: ContractType.Songwriting, label: 'Songwriting' },
+  { value: ContractType.Both, label: 'Master&Songwriter' },
 ]
 
 const userRoleOptions: SelectOption[] = [
-  { value: 'owner', label: 'Owner' },
-  { value: 'producer', label: 'Producer' },
-  { value: 'songwriter', label: 'Writer' },
-  { value: 'artist', label: 'Artist' },
-  { value: 'manager', label: 'Manager' },
-  { value: 'publisher', label: 'Publisher' },
-  { value: 'lawyer', label: 'Lawyer' },
+  { value: UserRole.Owner, label: 'Owner' },
+  { value: UserRole.Producer, label: 'Producer' },
+  { value: UserRole.Songwriter, label: 'Writer' },
+  { value: UserRole.Artist, label: 'Artist' },
+  { value: UserRole.Manager, label: 'Manager' },
+  { value: UserRole.Publisher, label: 'Publisher' },
+  { value: UserRole.Lawyer, label: 'Lawyer' },
 ]
+
+interface IUserRole {
+  id: string
+  contract_type: string
+  user_role: string
+  user_bps: number
+}
 
 export default function ProjectMetaDataForm({
   user,
   data,
+  request,
+  roleId,
   onSubmit,
 }: {
   user: User
   data: ProjectUserProps
+  request: string
+  roleId: string
   onSubmit: () => void
 }) {
   const router = useRouter()
   const { toast } = useToast()
-  const [loading, setLoaindg] = useState<boolean>(false)
-  const [state, setState] = useState<any>({
+  const [loading, setLoading] = useState<boolean>(false)
+  const [state, setState] = useState<IUserRole>({
     id: '',
-    contract_type: 'master',
-    user_role: 'owner',
+    contract_type: ContractType.Songwriting,
+    user_role: UserRole.Artist,
     user_bps: 10000,
   })
 
@@ -61,16 +89,19 @@ export default function ProjectMetaDataForm({
 
   useEffect(() => {
     if (data) {
-      setState({
-        id: data.id,
-        contract_type: data.contract_type,
-        user_role: data.user_role,
-        user_bps: data.user_bps,
+      data.roles.map((role: any) => {
+        if (role.id === roleId) {
+          setState({
+            id: role.id,
+            contract_type: role.contract_type,
+            user_role: role.user_role,
+            user_bps: role.user_bps,
+          })
+          setBps(String(Number(role.user_bps) / 100))
+        }
       })
-
-      setBps(String(Number(data.user_bps) / 100))
     }
-  }, [data])
+  }, [data, roleId])
 
   const handleSubmit = async () => {
     try {
@@ -84,25 +115,39 @@ export default function ProjectMetaDataForm({
         return
       }
 
-      setLoaindg(true)
-      const { data: result } = await axios.post('/api/project_user/update', {
-        state: state,
-        projectId: data.project_id,
-      })
+      setLoading(true)
+      const { data: result } = await axios.post(
+        request === 'edit'
+          ? '/api/project_user/update'
+          : '/api/project_user/add',
+        {
+          state: state,
+          projectId: data.id,
+        }
+      )
 
       if (result && result.status) {
         onSubmit()
         router.reload()
       }
 
-      setLoaindg(false)
-    } catch (err) {
-      setLoaindg(false)
-      toast({
-        title: 'Error',
-        description: 'Something went wrong!',
-        variant: 'destructive',
-      })
+      setLoading(false)
+    } catch (err: any) {
+      if (err.response?.data) {
+        setLoading(false)
+        toast({
+          title: 'Error',
+          description: `${err.response.data}`,
+          variant: 'destructive',
+        })
+      } else {
+        setLoading(false)
+        toast({
+          title: 'Error',
+          description: 'Someting went wrong!',
+          variant: 'destructive',
+        })
+      }
     }
   }
 
@@ -216,6 +261,7 @@ export default function ProjectMetaDataForm({
         <ProjectMetaDataSubmitButton
           handleSubmit={handleSubmit}
           loading={loading}
+          request={request}
         />
       </div>
     </div>

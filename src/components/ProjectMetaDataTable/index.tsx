@@ -16,7 +16,8 @@ import {
 import { bpsToPercent } from '@/lib/utils'
 import ProjectMetaDataDialog from './ProjectMetaDataDialog'
 import { useEffect, useState } from 'react'
-import { InvitaionNav } from './InvitaionNav'
+import { InvitationNav } from './InvitationNav'
+import CardComponent from './CardComponent'
 
 const isInvitation = (obj: ProjectUserProps | ProjectInvitationProps) =>
   !!(obj as any)?.status
@@ -93,7 +94,7 @@ export const ProjectMetaDataTable = ({
             ) : (
               <>
                 {project?.created_by === user.id ? (
-                  <InvitaionNav
+                  <InvitationNav
                     userId={row.original.user_id}
                     invitationId={row.original.id}
                   />
@@ -127,53 +128,11 @@ export const ProjectMetaDataTable = ({
 
   return (
     <div className="grid grid-cols-1 gap-4">
-      <div className="rounded-md border col-span-full">
-        <Table className="table-fixed w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup: any) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header: any, index: number) => (
-                  <TableHead
-                    key={header.id}
-                    className={index === 0 ? 'w-[160px]' : 'w-[80px]'}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </thead>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row: any) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell: any) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+      <div>
+      {table.getRowModel().rows.length &&
+          table
+            .getRowModel()
+            .rows.map((row: any) => <CardComponent key={row.id} data={row.original} allData={data} user={user}/>)}
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
