@@ -16,7 +16,7 @@ import {
 import { bpsToPercent } from '@/lib/utils'
 import ProjectMetaDataDialog from './ProjectMetaDataDialog'
 import { useEffect, useState } from 'react'
-import { InvitationNav } from './InvitationNav'
+import { InvitaionNav } from './InvitaionNav'
 import CardComponent from './CardComponent'
 
 const isInvitation = (obj: ProjectUserProps | ProjectInvitationProps) =>
@@ -94,7 +94,7 @@ export const ProjectMetaDataTable = ({
             ) : (
               <>
                 {project?.created_by === user.id ? (
-                  <InvitationNav
+                  <InvitaionNav
                     userId={row.original.user_id}
                     invitationId={row.original.id}
                   />

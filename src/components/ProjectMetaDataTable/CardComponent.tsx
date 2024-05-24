@@ -26,9 +26,9 @@ const CardComponent: React.FC<cardProps> = ({ data, user, allData }) => {
   const handleActionClick = (
     userId: string,
     roleId: string,
-    request: string
+    requst: string
   ) => {
-    setRequestType(request)
+    setRequestType(requst)
     setRoleId(roleId)
     setSelectedUserId(userId)
     setEditModal(true)
@@ -51,7 +51,7 @@ const CardComponent: React.FC<cardProps> = ({ data, user, allData }) => {
           <span className="relative flex shrink-0 overflow-hidden rounded-full h-11 w-11">
             <span className="flex h-full w-full items-center justify-center rounded-full bg-muted">
               {user.avatar === null ? (
-                'A'
+                'TI'
               ) : (
                 <img src={user.avatar} alt="avatar" />
               )}

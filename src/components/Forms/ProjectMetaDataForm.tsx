@@ -21,7 +21,7 @@ import axios from 'axios'
 enum ContractType {
   Master = 'Master',
   Songwriting = 'Songwriting',
-  Both = 'Both',
+  // Both = 'Both',
 }
 
 enum UserRole {
@@ -42,7 +42,7 @@ interface SelectOption {
 const contractTypeOptions: SelectOption[] = [
   { value: ContractType.Master, label: 'Master' },
   { value: ContractType.Songwriting, label: 'Songwriting' },
-  { value: ContractType.Both, label: 'Master&Songwriter' },
+  // { value: ContractType.Both, label: 'Master&Songwriter' },
 ]
 
 const userRoleOptions: SelectOption[] = [

@@ -7,8 +7,10 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '../ui/button'
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { toast } from '../ui/use-toast'
+import { useAuth } from '@/context/AuthProvider'
 
 type PopUpProps = React.HTMLAttributes<HTMLDivElement> & {
   project: ProjectType | null
@@ -27,22 +29,45 @@ export default function PopUp({
   ...props
 }: PopUpProps) {
   const [isLoadingContract, setIsLoadingContract] = useState<boolean>(false)
+  const [legalName, setLegalName] = useState<string>('')
+  const { user, setUser } = useAuth()
+  
+  useEffect(() => {
+    getUser(user.id)
+  }, [user])
+
+  const getUser = async (id: string) => {
+    try {
+      const { data } = await axios.post('/api/user/get', { id: id })
+      setLegalName(data.data.first_name + data.data.last_name)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const onMakeContract = async () => {
-    const data = {
-      projectId: project?.id,
-    }
-    try {
-      setIsLoadingContract(true)
-      const response = await axios.post('/api/contract/new', data)
-      const { contractId, contractTime } = response.data
-      setContractId(contractId)
-      handleMakeContract()
-      setContractTime(contractTime)
-    } catch (e: any) {
-      console.error(e.response.data)
-    } finally {
-      setIsLoadingContract(false)
+    if (legalName !== '') {
+      const data = {
+        projectId: project?.id,
+      }
+      try {
+        setIsLoadingContract(true)
+        const response = await axios.post('/api/contract/new', data)
+        const { contractId, contractTime } = response.data
+        setContractId(contractId)
+        handleMakeContract()
+        setContractTime(contractTime)
+      } catch (e: any) {
+        console.error(e.response.data)
+      } finally {
+        setIsLoadingContract(false)
+      }
+    } else {
+      toast({
+        title: 'Warning! Please check your profile',
+        description: 'LegalName is mandatory',
+        variant: 'destructive',
+      })
     }
   }
 

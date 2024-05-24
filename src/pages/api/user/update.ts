@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   try {
     const session = getCookie(req)
-    const { username, firstName, lastName, id } = req.body
+    const { username, firstName, lastName, nickName, id } = req.body
 
     const { data } = await axios.put(
       process.env.NEXT_PUBLIC_BASE_URL + '/user/' + id,
@@ -16,6 +16,7 @@ export default async function handler(
         username: username.trim(),
         firstName: firstName.trim(),
         lastName: lastName.trim(),
+        nickName: nickName.trim(),
       },
       {
         headers: {

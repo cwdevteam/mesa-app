@@ -12,6 +12,7 @@ type UserProps = {
   username: string
   firstName: string
   lastName: string
+  nickName: string
 }
 
 export default function UserProfile() {
@@ -22,11 +23,13 @@ export default function UserProfile() {
     username: '',
     firstName: '',
     lastName: '',
+    nickName: '',
   })
   const [originData, setOriginData] = useState<UserProps>({
     username: '',
     firstName: '',
     lastName: '',
+    nickName: '',
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [uploadLoading, setUploadLoading] = useState<boolean>(false)
@@ -45,17 +48,20 @@ export default function UserProfile() {
         username: data.data.username,
         firstName: data.data.first_name,
         lastName: data.data.last_name,
+        nickName: data.data.nick_name,
       })
       setOriginData({
         username: data.data.username,
         firstName: data.data.first_name,
         lastName: data.data.last_name,
+        nickName: data.data.nick_name,
       })
     } catch (err) {
       setUserData({
         username: '',
         firstName: '',
         lastName: '',
+        nickName: '',
       })
     }
   }
@@ -111,6 +117,7 @@ export default function UserProfile() {
       username: originData.username,
       firstName: originData.firstName,
       lastName: originData.lastName,
+      nickName: originData.nickName,
     })
   }
 
@@ -133,11 +140,13 @@ export default function UserProfile() {
           username: data.user.username,
           firstName: data.user.first_name,
           lastName: data.user.last_name,
+          nickName: data.user.nick_name,
         })
         setOriginData({
           username: data.user.username,
           firstName: data.user.first_name,
           lastName: data.user.last_name,
+          nickName: data.user.nick_name,
         })
       }
       setLoading(false)
@@ -324,7 +333,7 @@ export default function UserProfile() {
                 {editable ? (
                   <>
                     <label htmlFor="user_first" className="text-sm">
-                      Full Name
+                      Legal Name
                     </label>
                     <div className="flex items-center gap-5">
                       <Input
@@ -353,9 +362,40 @@ export default function UserProfile() {
                   </>
                 ) : (
                   <div className="flex items-center gap-5">
-                    <p>Full Name: </p>
+                    <p>Legal Name: </p>
                     <p>
                       {userData.firstName} {userData.lastName}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-5">
+              <div className="flex-1">
+                {editable ? (
+                  <>
+                    <label htmlFor="user_first" className="text-sm">
+                      Artist Nick name
+                    </label>
+                    <div className="flex items-center gap-5">
+                      <Input
+                        id="user_first"
+                        name="first_name"
+                        value={userData.nickName}
+                        onChange={(e) =>
+                          setUserData({
+                            ...userData,
+                            nickName: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-5">
+                    <p>Artist Nick name: </p>
+                    <p>
+                      {userData.nickName}
                     </p>
                   </div>
                 )}
