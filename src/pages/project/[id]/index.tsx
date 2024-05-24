@@ -11,7 +11,7 @@ import axios from 'axios'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import ContractHistoryTable from '@/components/ContractHistoryTable'
-import { ProjectSetting } from '@/components/Project/Projectsetting'
+import { ProjectSetting } from '@/components/Project/ProjectSetting'
 
 export default function Project() {
   const { query }: any = useRouter()
