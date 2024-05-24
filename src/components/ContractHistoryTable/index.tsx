@@ -3,14 +3,15 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
 
 interface ContractHistoryTableProps {
-  contractHistories: IContractHistory[]
+  contractHistories: (ProjectContractHistoryProps & {
+    projectUser: ProjectUserProps
+  })[]
 }
 
 const ContractHistoryTable: React.FC<ContractHistoryTableProps> = ({
@@ -29,9 +30,9 @@ const ContractHistoryTable: React.FC<ContractHistoryTableProps> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {contractHistories.map((history: IContractHistory, id: number) => (
+        {contractHistories.map((history, id: number) => (
           <TableRow key={id.toString()}>
-            <TableCell>{history.project_user?.user_name}</TableCell>
+            <TableCell>{history.projectUser?.user_name}</TableCell>
             <TableCell>
               Signed at {new Date(history.created_at).toLocaleString()}
             </TableCell>

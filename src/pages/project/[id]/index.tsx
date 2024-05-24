@@ -25,7 +25,9 @@ export default function Project() {
   >('project')
   const [contractTime, setContractTime] = useState<Date | null>(null)
   const [contractHistories, setContractHistories] = useState<
-    IContractHistory[]
+    (ProjectContractHistoryProps & {
+      projectUser: ProjectUserProps
+    })[]
   >([])
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export default function Project() {
     const byteArray = new Uint8Array(
       data.split('').map((char: string) => char.charCodeAt(0))
     )
-    
+
     const blob = new Blob([byteArray], { type: 'application/pdf' })
 
     // Create a link using the blob
@@ -155,7 +157,7 @@ export default function Project() {
             </div>
           </div>
         ) : tabContent === 'contract' ? (
-          <div className='w-full'>
+          <div className="w-full">
             <div className="text-center text-2xl font-bold w-full">
               {project?.title}
             </div>

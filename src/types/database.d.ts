@@ -105,3 +105,10 @@ type ProjectType = ProjectProps & {
 type MediaType = ProjectUploadProps & {
   upload: UploadProps
 }
+
+type ProjectContractHistoryProps = {
+  id: string
+  contract_id: string
+  created_at: Date
+  project_user_id: string
+}

@@ -31,7 +31,7 @@ export default function PopUp({
   const [isLoadingContract, setIsLoadingContract] = useState<boolean>(false)
   const [legalName, setLegalName] = useState<string>('')
   const { user, setUser } = useAuth()
-  
+
   useEffect(() => {
     getUser(user.id)
   }, [user])
@@ -39,14 +39,14 @@ export default function PopUp({
   const getUser = async (id: string) => {
     try {
       const { data } = await axios.post('/api/user/get', { id: id })
-      setLegalName(data.data.first_name + data.data.last_name)
+      setLegalName(data.data.first_name)
     } catch (err) {
       console.log(err)
     }
   }
 
   const onMakeContract = async () => {
-    if (legalName !== '') {
+    if (legalName) {
       const data = {
         projectId: project?.id,
       }
