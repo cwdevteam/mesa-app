@@ -47,7 +47,34 @@ interface ProjectUserProps {
   created_by: string
   created_at: Date
   update_at: Date
-  roles: any
+  user: UserProps[]
+  roles: Roles[]
+}
+
+interface UserProps {
+  id: string
+  email: string
+  username?: string
+  first_name?: string
+  last_name?: string
+  nick_name: string
+  password: string
+  token: string
+  aud: boolean
+  verified_at: string
+  avatar: any
+  created_at: string
+  updated_at: Date
+}
+
+interface Roles {
+  id: string
+  project_user_id: string
+  contract_type: string
+  user_role: string
+  user_bps: number
+  created_at: Date
+  update_at: Date
 }
 
 interface ProjectUploadProps {
@@ -98,7 +125,11 @@ type ProjectsByUserProps = {
 }
 
 type ProjectType = ProjectProps & {
-  projectUsers: ProjectUserProps[]
+  projectUsers: ProjectUserProps &
+    {
+      user: UserProps
+      roles: Roles[]
+    }[]
   projectInvitations: ProjectInvitationProps[]
 }
 

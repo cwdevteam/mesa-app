@@ -7,10 +7,9 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '../ui/button'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { toast } from '../ui/use-toast'
-import { useAuth } from '@/context/AuthProvider'
 
 type PopUpProps = React.HTMLAttributes<HTMLDivElement> & {
   project: ProjectType | null
@@ -29,24 +28,21 @@ export default function PopUp({
   ...props
 }: PopUpProps) {
   const [isLoadingContract, setIsLoadingContract] = useState<boolean>(false)
-  const [legalName, setLegalName] = useState<string>('')
-  const { user, setUser } = useAuth()
-
-  useEffect(() => {
-    getUser(user.id)
-  }, [user])
-
-  const getUser = async (id: string) => {
-    try {
-      const { data } = await axios.post('/api/user/get', { id: id })
-      setLegalName(data.data.first_name)
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const onMakeContract = async () => {
-    if (legalName) {
+    if (!project?.projectUsers) return
+
+    const invalidUsernames = project.projectUsers
+      .filter(
+        (pU) =>
+          pU.user.first_name === null ||
+          pU.user.last_name === null ||
+          pU.user.first_name === '' ||
+          pU.user.last_name === ''
+      )
+      .map((pU) => pU.user.username)
+
+    if (invalidUsernames.length === 0) {
       const data = {
         projectId: project?.id,
       }
@@ -64,7 +60,7 @@ export default function PopUp({
       }
     } else {
       toast({
-        title: 'Warning! Please check your profile',
+        title: `Warning! Please check ${invalidUsernames.join(', ')} profile`,
         description: 'LegalName is mandatory',
         variant: 'destructive',
       })

@@ -17,7 +17,6 @@ interface ContractHistoryTableProps {
 const ContractHistoryTable: React.FC<ContractHistoryTableProps> = ({
   contractHistories,
 }) => {
-  console.log('contractHistories: ', contractHistories)
   return (
     <Table>
       <TableCaption>

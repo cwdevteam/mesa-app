@@ -23,7 +23,6 @@ export function ProjectCollaborators({
   setContractTime: (contractTime: Date) => void
   onMakeContract: () => void
 }) {
-
   return (
     <div>
       <section className="grid mt-4 w-full gap-2">
@@ -37,7 +36,10 @@ export function ProjectCollaborators({
                 setContractTime={setContractTime}
                 onMakeContract={handleMakeContract}
               >
-                <Button className="text-sm rounded-full p-[6px] sm:rounded-md sm:px-4 sm:py-2">
+                <Button
+                  className="text-sm rounded-full px-[13px] py-2 sm:rounded-md sm:px-4 sm:py-2"
+                  variant="outline"
+                >
                   <Icons.contract
                     style={{
                       width: '20px',
@@ -63,7 +65,7 @@ export function ProjectCollaborators({
           <ProjectMetaDataTable
             project={project}
             user={user}
-            data={project?.projectUsers || []}
+            data={(project?.projectUsers || []) as ProjectUserProps[]}
             invitations={project?.projectInvitations || []}
           />
         </div>

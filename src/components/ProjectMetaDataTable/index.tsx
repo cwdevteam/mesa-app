@@ -129,10 +129,20 @@ export const ProjectMetaDataTable = ({
   return (
     <div className="grid grid-cols-1 gap-4">
       <div>
-      {table.getRowModel().rows.length &&
+        {table.getRowModel().rows.length ? (
           table
             .getRowModel()
-            .rows.map((row: any) => <CardComponent key={row.id} data={row.original} allData={data} user={user}/>)}
+            .rows.map((row: any) => (
+              <CardComponent
+                key={row.id}
+                data={row.original}
+                allData={data}
+                user={user}
+              />
+            ))
+        ) : (
+          <></>
+        )}
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
