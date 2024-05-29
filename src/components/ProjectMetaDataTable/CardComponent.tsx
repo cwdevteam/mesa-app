@@ -48,7 +48,12 @@ const CardComponent: React.FC<CardProps> = ({ data, allData, project }) => {
     <div className="max-w-max rounded-md overflow-hidden shadow-lg border mx-4 my-4">
       <div></div>
       <div className="px-6 py-4 flex">
-        <UserAvatar username={data.user_name} project={project} />
+        <UserAvatar
+          user={
+            project?.projectUsers.find((pU) => pU.user_name === data.user_name)
+              ?.user!
+          }
+        />
         <div className="font-bold w-screen text-lg flex ml-6 items-center">
           <div>{data.user_name}</div>
           <div>
@@ -148,9 +153,9 @@ const CardComponent: React.FC<CardProps> = ({ data, allData, project }) => {
         request={requestType}
         roleId={roleId}
         project={project}
-        selectedUser={
-          allData.find((v: ProjectUserProps) => v.user_id === selectedUserId)
-        }
+        selectedUser={allData.find(
+          (v: ProjectUserProps) => v.user_id === selectedUserId
+        )}
       />
     </div>
   )

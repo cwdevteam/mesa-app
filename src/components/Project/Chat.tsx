@@ -7,7 +7,7 @@ import axios from 'axios'
 import { Icons } from '../Icons'
 import UserAvatar from './UserAvatar'
 
-const socket = io('http://localhost:4000')
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!)
 
 type ChatProps = {
   project?: ProjectType
@@ -152,7 +152,13 @@ function Chat({ project }: ChatProps) {
                     >
                       {user.username !== msg.sender &&
                         msg.sender !== 'server' && (
-                          <UserAvatar username={msg.sender} project={project} />
+                          <UserAvatar
+                            user={
+                              project?.projectUsers.find(
+                                (pU) => pU.user_name === msg.sender
+                              )?.user!
+                            }
+                          />
                         )}
                       <div
                         className={
