@@ -125,11 +125,10 @@ type ProjectsByUserProps = {
 }
 
 type ProjectType = ProjectProps & {
-  projectUsers: ProjectUserProps &
-    {
-      user: UserProps
-      roles: Roles[]
-    }[]
+  projectUsers: (ProjectUserProps & {
+    user: UserProps
+    roles: Roles[]
+  })[]
   projectInvitations: ProjectInvitationProps[]
 }
 

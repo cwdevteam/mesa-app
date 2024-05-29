@@ -6,17 +6,18 @@ import ProjectMetaDataDialog from './ProjectMetaDataDialog'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { Icons } from '../Icons'
+import UserAvatar from '../Project/UserAvatar'
 
-interface cardProps {
+export interface CardProps {
   data: any
-  user: any
-  allData: any
+  allData: ProjectUserProps[]
+  project?: ProjectType
 }
 
 const isInvitation = (obj: ProjectUserProps | ProjectInvitationProps) =>
   !!(obj as any)?.status
 
-const CardComponent: React.FC<cardProps> = ({ data, user, allData }) => {
+const CardComponent: React.FC<CardProps> = ({ data, allData, project }) => {
   const [selectedUserId, setSelectedUserId] = useState('')
   const [editModal, setEditModal] = useState<boolean>(false)
   const [requestType, setRequestType] = useState<string>('')
@@ -47,17 +48,7 @@ const CardComponent: React.FC<cardProps> = ({ data, user, allData }) => {
     <div className="max-w-max rounded-md overflow-hidden shadow-lg border mx-4 my-4">
       <div></div>
       <div className="px-6 py-4 flex">
-        <button className="inline-flex items-center justify-center text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground px-4 py-2 relative h-12 w-12 rounded-full">
-          <span className="relative flex shrink-0 overflow-hidden rounded-full h-11 w-11">
-            <span className="flex h-full w-full items-center justify-center rounded-full bg-muted">
-              {user.avatar === null ? (
-                'TI'
-              ) : (
-                <img src={user.avatar} alt="avatar" />
-              )}
-            </span>
-          </span>
-        </button>
+        <UserAvatar username={data.user_name} project={project} />
         <div className="font-bold w-screen text-lg flex ml-6 items-center">
           <div>{data.user_name}</div>
           <div>
@@ -77,51 +68,89 @@ const CardComponent: React.FC<cardProps> = ({ data, user, allData }) => {
           </div>
         </div>
       </div>
-      {data?.roles?.map((role: any) => (
-        <div
-          key={role.id}
-          className="px-6 py-3 flex flex-row border mx-6 my-3 rounded-md items-center"
-        >
-          <span className="flex items-center text-sm">Contract Type: </span>
-          <span className="flex-1 mx-4 rounded-md  px-3 py-1 text-sm font-semibold flex dir justify-center items-center mr-2">
-            {role.contract_type === 'Both'
-              ? 'Master&SongWriter'
-              : role.contract_type}
-          </span>
-          <span className="flex items-center text-sm ml-4">Role: </span>
-          <span className="flex-1 mx-4 rounded-md px-3 py-1 text-sm font-semibold flex dir justify-center items-center mr-2">
-            {role.user_role}
-          </span>
-          <span className="flex items-center text-sm ml-4">Bps: </span>
-          <span className="flex-1 mx-4 rounded-md px-3 py-1 text-sm font-semibold flex dir justify-center items-center mr-2">
-            {bpsToPercent(role.user_bps ?? 0)}
-          </span>
-          <span className="flex-initial flex flex-row">
-            <button
-              className="inline-flex items-center justify-center mr-5 rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline"
-              onClick={() => handleDelete(role.id)}
-            >
-              <Icons.delete />
-            </button>
-            <button
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
-              onClick={() => handleActionClick(data.user_id, role.id, 'edit')}
-            >
-              <Icons.Edit/>
-            </button>
-          </span>
-        </div>
-      ))}
+      <div className="overflow-x-auto">
+        <table className="min-w-full caption-bottom text-sm">
+          <thead className="[&amp;_tr]:border-b">
+            <tr className="border-b transition-colors hover:bg-muted/50">
+              <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-4 py-2">
+                  Contract Type
+                </div>
+              </th>
+              <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-4 py-2">
+                  Role
+                </div>
+              </th>
+              <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-4 py-2">
+                  Bps
+                </div>
+              </th>
+              <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                <div className="hidden sm:block text-center">Delete</div>
+              </th>
+              <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                <div className=" hidden sm:block text-center">Edit</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="[&amp;_tr:last-child]:border-0">
+            {data?.roles?.map((role: any) => (
+              <tr
+                key={role.id}
+                className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              >
+                <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                  <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-4 py-2">
+                    {role.contract_type === 'Both'
+                      ? 'Master&SongWriter'
+                      : role.contract_type}
+                  </div>
+                </th>
+                <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                  <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-4 py-2">
+                    {role.user_role}
+                  </div>
+                </th>
+                <th className="h-10 px-2 sm:px-0 text-left align-middle font-medium text-muted-foreground">
+                  <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-4 py-2">
+                    {bpsToPercent(role.user_bps ?? 0)}
+                  </div>
+                </th>
+                <th className="h-10 px-2 sm:px-0 text-center cursor-pointer align-middle font-medium text-muted-foreground">
+                  <div
+                    className=" inline-flex justify-center items-center mt-1 text-center"
+                    onClick={() => handleDelete(role.id)}
+                  >
+                    <Icons.delete />
+                  </div>
+                </th>
+                <th className="h-10 px-2 sm:px-0 text-center cursor-pointer flex flex-row justify-center items-center align-middle font-medium text-muted-foreground">
+                  <div
+                    className=" inline-flex justify-center items-center text-center"
+                    onClick={() =>
+                      handleActionClick(data.user_id, role.id, 'edit')
+                    }
+                  >
+                    <Icons.Edit />
+                  </div>
+                </th>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <ProjectMetaDataDialog
         open={editModal}
         setOpen={setEditModal}
         request={requestType}
         roleId={roleId}
-        user={data}
-        data={allData.find(
-          (v: ProjectUserProps) => v.user_id === selectedUserId
-        )}
+        project={project}
+        selectedUser={
+          allData.find((v: ProjectUserProps) => v.user_id === selectedUserId)
+        }
       />
     </div>
   )

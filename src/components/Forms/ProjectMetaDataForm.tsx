@@ -63,16 +63,16 @@ interface IUserRole {
 }
 
 export default function ProjectMetaDataForm({
-  user,
-  data,
+  project,
+  selectedUser,
   request,
   roleId,
   onSubmit,
 }: {
-  user: User
-  data: ProjectUserProps
+  project?: ProjectType
+  selectedUser: ProjectUserProps
   request: string
-  roleId: string
+  roleId?: string
   onSubmit: () => void
 }) {
   const router = useRouter()
@@ -88,8 +88,8 @@ export default function ProjectMetaDataForm({
   const [bps, setBps] = useState('')
 
   useEffect(() => {
-    if (data) {
-      data.roles.map((role: any) => {
+    if (selectedUser) {
+      selectedUser.roles.forEach((role) => {
         if (role.id === roleId) {
           setState({
             id: role.id,
@@ -101,15 +101,35 @@ export default function ProjectMetaDataForm({
         }
       })
     }
-  }, [data, roleId])
+  }, [selectedUser, roleId])
 
   const handleSubmit = async () => {
+    if (!project) return
     try {
       if (state.user_bps > 10000 || state.user_bps < 0) {
         toast({
           title: 'Warning',
           description:
             'The entered value is out of range. Please ensure the value is between 0 and 100',
+          variant: 'destructive',
+        })
+        return
+      }
+
+      const sum = project.projectUsers
+        .filter((pU) => pU.id !== selectedUser.id)
+        .reduce(
+          (accumulator, pU) =>
+            accumulator +
+            (pU.roles.find((role) => role.contract_type === state.contract_type)
+              ?.user_bps || 0),
+          0
+        )
+
+      if (sum + state.user_bps > 10000) {
+        toast({
+          title: 'Warning',
+          description: `Input Error: The value you have entered is outside the valid range. Please enter a value between 0% and ${(10000 - sum) / 100}%.`,
           variant: 'destructive',
         })
         return
@@ -122,7 +142,8 @@ export default function ProjectMetaDataForm({
           : '/api/project_user/add',
         {
           state: state,
-          projectId: data.id,
+          projectUserId: selectedUser.id,
+          projectId: selectedUser.project_id,
         }
       )
 

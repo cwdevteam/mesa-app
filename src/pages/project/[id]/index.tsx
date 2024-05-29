@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@/context/AuthProvider'
 import { ProjectCollaborators } from '@/components/Project/ProjectCollaborators'
 import ProjectDetailsCard from '@/components/Project/ProjectDetailsCard'
-import ProjectTimeline from '@/components/Project/ProjectTimeline'
 import { TimelineProvider } from '@/context/TimelineContext'
 import UploadButton from '@/components/FileUpload'
 import { MediaList } from '@/components/GlobalAudioPlayer/MediaList'
@@ -12,18 +11,19 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import ContractHistoryTable from '@/components/ContractHistoryTable'
 import { ProjectSetting } from '@/components/Project/ProjectSetting'
+import Chat from '@/components/Project/Chat'
 
 export default function Project() {
   const { query }: any = useRouter()
   const { user } = useAuth()
 
-  const [project, setProject] = useState<ProjectType | null>(null)
+  const [project, setProject] = useState<ProjectType | undefined>()
   const [medias, setMedias] = useState<MediaType[]>([])
-  const [contractId, setContractId] = useState<string | null>(null)
+  const [contractId, setContractId] = useState<string | undefined>()
   const [tabContent, setTabContent] = useState<
     'project' | 'contract' | 'setting'
   >('project')
-  const [contractTime, setContractTime] = useState<Date | null>(null)
+  const [contractTime, setContractTime] = useState<Date | undefined>()
   const [contractHistories, setContractHistories] = useState<
     (ProjectContractHistoryProps & {
       projectUser: ProjectUserProps
@@ -46,14 +46,14 @@ export default function Project() {
       setProject(data.project)
       const { contracts } = data.project
       if (!contracts || !contracts.length) {
-        setContractId(null)
+        setContractId(undefined)
       } else {
         setContractId(contracts[0].id)
         setContractTime(contracts[0].created_at)
         setContractHistories(contracts[0].contractHistories)
       }
     } catch (err) {
-      setProject(null)
+      setProject(undefined)
     }
   }
 
@@ -152,7 +152,7 @@ export default function Project() {
                 </div>
               </div>
               <div className="w-full lg:max-w-[400px]">
-                <ProjectTimeline projectId={project?.id} />
+                <Chat project={project} />
               </div>
             </div>
           </div>

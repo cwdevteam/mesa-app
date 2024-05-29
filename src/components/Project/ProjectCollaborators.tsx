@@ -16,10 +16,10 @@ export function ProjectCollaborators({
   setContractTime,
   onMakeContract: handleMakeContract,
 }: {
-  project: ProjectType | null
+  project?: ProjectType
   user: User
-  contractId: string | null
-  setContractId: (contractId: string | null) => void
+  contractId?: string
+  setContractId: (contractId?: string) => void
   setContractTime: (contractTime: Date) => void
   onMakeContract: () => void
 }) {

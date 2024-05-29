@@ -12,7 +12,7 @@ import ProjectInviteForm from '../Forms/ProjectInviteForm'
 type CreateProjectDialogProps = React.HTMLAttributes<HTMLDivElement> & {
   // TODO
   user: User
-  project: ProjectType | null
+  project?: ProjectType
 }
 
 export default function ProjectInviteDialog({

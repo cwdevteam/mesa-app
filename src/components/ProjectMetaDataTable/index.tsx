@@ -28,7 +28,7 @@ export const ProjectMetaDataTable = ({
   user,
   invitations,
 }: {
-  project: ProjectProps | null
+  project?: ProjectType
   data: ProjectUserProps[]
   user: User
   invitations: ProjectInvitationProps[]
@@ -132,12 +132,12 @@ export const ProjectMetaDataTable = ({
         {table.getRowModel().rows.length ? (
           table
             .getRowModel()
-            .rows.map((row: any) => (
+            .rows.map((row) => (
               <CardComponent
                 key={row.id}
                 data={row.original}
                 allData={data}
-                user={user}
+                project={project}
               />
             ))
         ) : (
@@ -165,8 +165,7 @@ export const ProjectMetaDataTable = ({
       <ProjectMetaDataDialog
         open={editModal}
         setOpen={setEditModal}
-        user={user}
-        data={data.find((v: ProjectUserProps) => v.user_id === selectedUserId)}
+        selectedUser={data.find((v: ProjectUserProps) => v.user_id === selectedUserId)!}
       />
     </div>
   )

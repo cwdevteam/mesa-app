@@ -73,19 +73,19 @@ export function TimelineProvider({ children }: { children: ReactNode }) {
   }, [router.query])
 
   const init = async (id: string) => {
-    try {
-      const { data } = await axios.post('/api/note/get', { id: id })
+    // try {
+    //   const { data } = await axios.post('/api/note/get', { id: id })
 
-      dispatch({
-        type: 'init',
-        event: data.notes,
-      })
-    } catch (err) {
-      dispatch({
-        type: 'init',
-        event: [] as any,
-      })
-    }
+    //   dispatch({
+    //     type: 'init',
+    //     event: data.notes,
+    //   })
+    // } catch (err) {
+    //   dispatch({
+    //     type: 'init',
+    //     event: [] as any,
+    //   })
+    // }
   }
 
   return (

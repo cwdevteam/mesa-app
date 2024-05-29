@@ -12,8 +12,8 @@ import { DialogClose } from '@radix-ui/react-dialog'
 import { toast } from '../ui/use-toast'
 
 type PopUpProps = React.HTMLAttributes<HTMLDivElement> & {
-  project: ProjectType | null
-  setContractId: (contractId: string | null) => void
+  project?: ProjectType
+  setContractId: (contractId?: string) => void
   setContractTime: (contractTime: Date) => void
   onMakeContract: () => void
 }

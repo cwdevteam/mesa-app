@@ -9,16 +9,26 @@ import {
 // import ProjectDetailsForm from './ProjectDetailsForm'
 import ProjectMetaDataForm from '../Forms/ProjectMetaDataForm'
 
+export interface ProjectMetaDataDialogProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  project?: ProjectType
+  selectedUser?: ProjectUserProps
+  request?: string
+  roleId?: string
+  open?: boolean
+  setOpen?: (value: boolean) => void
+}
+
 export default function ProjectMetaDataDialog({
-  user,
-  data,
+  project,
+  selectedUser,
   open,
-  request,
+  request = 'create',
   setOpen,
   roleId,
   className,
   ...props
-}: any) {
+}: ProjectMetaDataDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
@@ -26,17 +36,21 @@ export default function ProjectMetaDataDialog({
         {...props}
       >
         <DialogHeader>
-          <DialogTitle>{request === "create"? "Create" : "Update"} Project Meta Data</DialogTitle>
+          <DialogTitle>
+            {request === 'create' ? 'Create' : 'Update'} Project Meta Data
+          </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <div className="max-w-full">
-          <ProjectMetaDataForm
-            request={request}
-            user={user}
-            data={data}
-            roleId={roleId}
-            onSubmit={() => setOpen(false)}
-          />
+          {selectedUser && (
+            <ProjectMetaDataForm
+              request={request}
+              project={project}
+              selectedUser={selectedUser}
+              roleId={roleId}
+              onSubmit={() => setOpen && setOpen(false)}
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>
