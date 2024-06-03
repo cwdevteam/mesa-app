@@ -76,7 +76,7 @@ export default function ProjectInviteForm({
         <Input
           id="name"
           name="name"
-          placeholder="Attorney Name"
+          placeholder="Team member"
           type="text"
           autoCapitalize="none"
           autoCorrect="off"

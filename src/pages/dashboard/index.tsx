@@ -38,12 +38,14 @@ export default function Dashboard() {
   return (
     <main className="grid gap-10 container mx-auto py-10 content-start">
       <div className="flex justify-between gap-4">
-        <h2 className="text-2xl font-semibold tracking-tight">
+        <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-3xl font-semibold tracking-tight">
           {intl.formatMessage({ id: 'page.welcome' })}
         </h2>
 
         <CreateProjectDialog user={user}>
-          <Button className="text-md px-4">{'New Project'}</Button>
+          <Button className="text-sm sm:text-md md:text-lg lg:text-lg px-1 sm:px-2 md:px-3 lg:px-4">
+            {'New Project'}
+          </Button>
         </CreateProjectDialog>
       </div>
 

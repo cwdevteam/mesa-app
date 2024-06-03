@@ -11,6 +11,7 @@ type MesaInterface = {
   }
   projectUserId: string
   projectId: string
+  currentUsername: string
 }
 
 export default async function handler(
@@ -19,12 +20,13 @@ export default async function handler(
 ) {
   try {
     const session = getCookie(req)
-    const { state, projectUserId, projectId }: MesaInterface = req.body
+    const { state, projectUserId, projectId, currentUsername }: MesaInterface = req.body
 
     const { data } = await axios.post(
       process.env.NEXT_PUBLIC_BASE_URL + '/project_user_role/add/',
       {
         projectId: projectId,
+        currentUsername: currentUsername,
         projectUserId: projectUserId,
         role: state.user_role,
         type: state.contract_type,

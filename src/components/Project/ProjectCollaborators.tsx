@@ -41,9 +41,9 @@ export function ProjectCollaborators({
                   variant="outline"
                 >
                   <Icons.contract
+                    className="text-black dark:text-white"
                     style={{
                       width: '20px',
-                      fill: '#FFF',
                       marginLeft: 5,
                     }}
                   />{' '}

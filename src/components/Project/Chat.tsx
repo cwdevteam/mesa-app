@@ -165,7 +165,7 @@ function Chat({ project }: ChatProps) {
                           msg.sender === user.username
                             ? 'flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ml-auto bg-primary text-primary-foreground'
                             : msg.sender === 'server'
-                              ? 'py-3 px-4 border overflow-hidden break-words rounded-md text-center flex justify-center items-center'
+                              ? 'text-xs sm:text-sm lg:text-sm py-2 px-2 sm:py-3 sm:px-4 border overflow-hidden break-words rounded-md text-center flex justify-center items-center'
                               : 'flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm mr-auto text-ellipsis bg-muted'
                         }
                       >

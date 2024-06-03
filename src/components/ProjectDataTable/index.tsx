@@ -107,54 +107,56 @@ export const ProjectDataTable = ({
   })
 
   return (
-    <div className="grid grid-cols-1 gap-4">
-      <div className="rounded-md border col-span-full">
-        <Table className="table-fixed w-full">
-          <thead>
-            {table.getHeaderGroups().map((headerGroup: any) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header: any, index: number) => (
-                  <TableHead
-                    key={header.id}
-                    className={index === 0 ? 'w-[160px]' : ''}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </thead>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+    <div className="overflow-x-auto">
+      <div className="min-w-screen grid grid-cols-1 gap-4">
+        <div className="rounded-md border col-span-full">
+          <Table className="table-fixed w-full min-w-[600px]">
+            <thead>
+              {table.getHeaderGroups().map((headerGroup: any) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header: any, index: number) => (
+                    <TableHead
+                      key={header.id}
+                      className={index === 0 ? 'w-[160px]' : ''}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </thead>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button

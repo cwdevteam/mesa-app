@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import axios from 'axios'
+import { useAuth } from '@/context/AuthProvider'
 
 enum ContractType {
   Master = 'Master',
@@ -84,6 +85,7 @@ export default function ProjectMetaDataForm({
     user_role: UserRole.Artist,
     user_bps: 10000,
   })
+  const { user } = useAuth()
 
   const [bps, setBps] = useState('')
 
@@ -130,7 +132,7 @@ export default function ProjectMetaDataForm({
         toast({
           title: 'Warning',
           description: `Input Error: The value you have entered is outside the valid range. Please enter a value between 0% and ${(10000 - sum) / 100}%.`,
-          variant: 'destructive',
+          variant: 'warning',
         })
         return
       }
@@ -144,6 +146,7 @@ export default function ProjectMetaDataForm({
           state: state,
           projectUserId: selectedUser.id,
           projectId: selectedUser.project_id,
+          currentUsername: user.username
         }
       )
 
@@ -157,9 +160,9 @@ export default function ProjectMetaDataForm({
       if (err.response?.data) {
         setLoading(false)
         toast({
-          title: 'Error',
+          title: 'Warning',
           description: `${err.response.data}`,
-          variant: 'destructive',
+          variant: 'warning',
         })
       } else {
         setLoading(false)
