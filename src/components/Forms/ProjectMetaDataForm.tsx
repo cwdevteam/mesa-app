@@ -146,7 +146,7 @@ export default function ProjectMetaDataForm({
           state: state,
           projectUserId: selectedUser.id,
           projectId: selectedUser.project_id,
-          currentUsername: user.username
+          currentUsername: user.username,
         }
       )
 
@@ -254,7 +254,7 @@ export default function ProjectMetaDataForm({
       </div>
 
       <div className="grid gap-3">
-        <Label htmlFor="bps">%</Label>
+        <Label htmlFor="bps">Splits</Label>
         <Input
           id="user_bps"
           name="user_bps"

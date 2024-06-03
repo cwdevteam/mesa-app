@@ -126,10 +126,10 @@ function Chat({ project }: ChatProps) {
   }
 
   return (
-    <div className="rounded-xl border bg-card text-card-foreground shadow h-[37rem]">
+    <div className="rounded-xl border bg-card text-card-foreground shadow min-h-[37rem]">
       <div className="space-y-1.5 p-6 flex flex-row justify-center items-center"></div>
       <div
-        className="px-4 py-8 h-[78%] overflow-y-auto relative style={{ height: '400px' }}"
+        className="px-4 py-8 h-[30rem] overflow-y-auto relative style={{ height: '400px' }}"
         ref={messageContainerRef}
         // onScroll={handleScroll}
       >
@@ -235,7 +235,7 @@ function Chat({ project }: ChatProps) {
           <form onSubmit={sendMessage} className="w-full">
             <div className="flex items-center justify-between">
               <textarea
-                className="flex mx-4 h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 flex-1"
+                className="flex mx-4 h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 flex-1 resize-none"
                 name="text"
                 placeholder="Type your message..."
                 value={message}
