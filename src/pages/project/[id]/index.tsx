@@ -10,7 +10,7 @@ import axios from 'axios'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import ContractHistoryTable from '@/components/ContractHistoryTable'
-import { ProjectSetting } from '@/components/Project/ProjectSetting'
+import { ProjectDistribution } from '@/components/Project/ProjectDistribution'
 import Chat from '@/components/Project/Chat'
 
 export default function Project() {
@@ -21,7 +21,7 @@ export default function Project() {
   const [medias, setMedias] = useState<MediaType[]>([])
   const [contractId, setContractId] = useState<string | undefined>()
   const [tabContent, setTabContent] = useState<
-    'project' | 'contract' | 'setting'
+    'project' | 'contract' | 'distribution'
   >('project')
   const [contractTime, setContractTime] = useState<Date | undefined>()
   const [contractHistories, setContractHistories] = useState<
@@ -69,7 +69,7 @@ export default function Project() {
     }
   }
 
-  const onTabChange = async (tab: 'project' | 'contract' | 'setting') => {
+  const onTabChange = async (tab: 'project' | 'contract' | 'distribution') => {
     await getProject()
     setTabContent(tab)
   }
@@ -124,10 +124,10 @@ export default function Project() {
                 Contract
               </TabsTrigger>
               <TabsTrigger
-                value="setting"
-                onClick={() => onTabChange('setting')}
+                value="distribution"
+                onClick={() => onTabChange('distribution')}
               >
-                Setting
+                Distribution
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -184,7 +184,7 @@ export default function Project() {
             )}
           </div>
         ) : (
-          <ProjectSetting />
+          <ProjectDistribution />
         )}
       </main>
     </TimelineProvider>

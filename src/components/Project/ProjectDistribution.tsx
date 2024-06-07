@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '../ui/use-toast'
 
-export function ProjectSetting() {
+export function ProjectDistribution() {
   const router = useRouter()
 
   const [loading, setLoading] = useState<boolean>(false)
