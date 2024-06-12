@@ -7,19 +7,43 @@ import { useToast } from '@/components/ui/use-toast'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
+interface MediaProps {
+  url: string
+  avatar: string
+  name: string
+  localUrl?: string
+  duration?: number
+}
+
+const imageArray = [
+  'music_image (1).jpg',
+  'music_image (2).jpg',
+  'music_image (3).jpg',
+  'music_image (4).jpg',
+]
+
 export function MediaCard({ media }: { media: MediaType }) {
-  const { setCurrentMedia, currentMedia } = useMedia()
+  const { handleAddMedia, medias } = useMedia()
+
   const router = useRouter()
   const { toast } = useToast()
   const [loading, setLoading] = useState<boolean>(false)
 
   const handlePlay = () => {
-    setCurrentMedia({
-      ...currentMedia,
-      url: media.upload.url,
-      creator: 'Andres',
-      name: media.upload.name,
-    })
+    const audio = new Audio(media.upload.url)
+    const randomIndex = Math.floor(Math.random() * imageArray.length)
+
+    audio.onloadedmetadata = function () {
+      const duration = audio.duration
+
+      handleAddMedia({
+        avatar: `/${imageArray[randomIndex]}`,
+        duration: duration,
+        name: media.upload.name,
+        url: media.upload.url,
+        localUrl: media.upload.url,
+      } as MediaProps)
+    }
   }
 
   const handleSubmit = async () => {
